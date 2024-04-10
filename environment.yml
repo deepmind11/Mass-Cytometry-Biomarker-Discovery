@@ -1,4 +1,4 @@
-name: teiko
+name: cytof
 channels:
   - defaults
   - conda-forge

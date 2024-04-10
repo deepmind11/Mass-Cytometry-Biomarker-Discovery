@@ -1,4 +1,4 @@
-# Teiko Technical Assesment Report
+# Analysing Mass Cytometry data from clinical trials to identify biomarkers of response
 
 ## Environment setup
 
@@ -10,30 +10,58 @@ Create the environment and activate it:
 
 `conda env create --file environment.yml`
 
-`conda activate teiko`
+`conda activate cytof`
 
-## Python Assesment
+## Data Analysis
 
-### Question 1
+The data wrangling, visualization and statistical analysis code can be found in **analysis_notebook.ipynb**
 
-1. Delete cell_count_transformed.csv.
-2. Run p1_notebook.ipynb to generate cell_count_transformed.csv
+## Plots
 
-### Question 2
+1. B_cell Population in Responders vs Non-responders
 
-1. Run p2_notebook.ipynb
+![B_cell](plots/b_cell.png)
 
-## Database Assesment
+2. CD4_T_cell Population in Responders vs Non-responders
 
-I have used sqlite to create a database called teiko.db
-To connect to the database you can type `sqlite3 teiko.db` at the terminal.
+![CD4_T_cell](plots/cd4_t_cell.png)
 
-### Question 1
+3. CD8_T_Cell Population in Responders vs Non-responders
+
+![CD8_T_Cell](plots/cd8_t_cell.png)
+
+4. Natural Killer Cell Population in Responders vs Non-responders
+
+![NK_cell](plots/nk_cell.png)
+
+5. Monocyte Population in Responders vs Non-responders
+
+![B_cell](plots/monocyte.png)
+
+## Results
+
+### At a significance level of 0.05
+
+The relative frequencies of CD4 T-cells and Natural Killer cells show significant
+differences between responders and non-responders. With both cell types being present
+at higher proportions in responders.
+
+### At a significance level of 0.1
+
+Monocytes also warrant further consideration. Responders seem to have low-levels
+of monocytes.
+
+## Database to store Mass Cytometry and Clinical trials data
+
+I have used sqlite to create a database called cytof.db
+To connect to the database you can type `sqlite3 cytof.db` at the terminal.
+
+### Schema
 
 The schema of the database is available in the schema.sql file.
 You can find the ER diagram [here](https://dbdiagram.io/d/6612f20303593b6b61675b8d)
 
-![ER Diagram]('./teiko.png')
+![ER Diagram](./cytof.png)
 
 Here is a summary of the schema:
 
@@ -55,25 +83,12 @@ Here is a summary of the schema:
     * participants_idx ON participants (project_id)
     * diagnosis_idx ON diagnosis (subject_id)
 
-### Question 2
+### Sample SQL queries
 
-Advantages of capturing this information in a database:
-
-1. Scalability: Database can handle large volumes of data without significant performance reductions
-2. Data Integrity: with appropriate constraints we can ensure that our DB is consistent. ACID property of transactions.
-3. Concurrent Access: allowing multiple analyses pipleines/users to access the DB.
-4. Security: Securing Patient Information.
-5. Faster Access: With appropriate indexing we can ensure faster data access.
-6. Defining relationships between tables
-7. Redundancy Reduction
-8. Version Control: to track how the database evolved over time
-
-### Question 3 - 5
-
-1. Connect to the database: `sqlite3 teiko.db` at the terminal
+1. Connect to the database: `sqlite3 cytof.db` at the terminal
 2. Copy paste the SQL queries from "queries.sql" file to get the results.
 
-#### Q3
+#### Query 1
 
 |   name   | number_of_subjects |
 |----------|--------------------|
@@ -81,7 +96,7 @@ Advantages of capturing this information in a database:
 | lung     | 3                  |
 | melanoma | 6                  |
 
-#### Q4
+#### Query 2
 
 | sample_id |
 |-----------|
@@ -94,7 +109,7 @@ Advantages of capturing this information in a database:
 | s13       |
 | s17       |
 
-#### Q5
+#### Query 3
 
 | project_id | number_of_samples |
 |------------|-------------------|
@@ -102,10 +117,14 @@ Advantages of capturing this information in a database:
 | 2          | 4                 |
 | 3          | 2                 |
 
+#### Query 4
+
 | response | number_of_samples |
 |----------|-------------------|
 | n        | 4                 |
 | y        | 4                 |
+
+#### Query 5
 
 | sex | number_of_samples |
 |-----|-------------------|
